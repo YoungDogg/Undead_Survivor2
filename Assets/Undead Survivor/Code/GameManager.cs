@@ -25,14 +25,16 @@ public class GameManager : MonoBehaviour
     public Player player;
     public LevelUp uiLevelUp;
     public Result uiResult;
+    public Transform uiJoy;
     public GameObject enemyCleaner;
 
     private void Awake()
     {
         instance = this;
-        maxGameTime = 2 * 10f;
+        maxGameTime = 5 * 60f;
         maxHealth = 100;
-        nextExp = new int[] { 1,2,3,4,5,6,7,8,9,10 };
+        nextExp = new int[] { 3, 19, 28, 45, 51, 67, 72, 84, 190, 299 };
+        Application.targetFrameRate = 60;
     }
 
     public void GameStart(int id)
@@ -43,7 +45,9 @@ public class GameManager : MonoBehaviour
         player.gameObject.SetActive(true);
         uiLevelUp.Select(playerId % 2);
         Resume();
-        
+
+        AudioManager.instance.PlayBgm(true);
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Select);
     }
 
     public void GameOver()
@@ -60,6 +64,9 @@ public class GameManager : MonoBehaviour
         uiResult.gameObject.SetActive(true);
         uiResult.Lose();
         Stop();
+
+        AudioManager.instance.PlayBgm(false); 
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Lose);
     }
 
     public void GameVictory()
@@ -77,11 +84,19 @@ public class GameManager : MonoBehaviour
         uiResult.gameObject.SetActive(true);
         uiResult.Win();
         Stop();
+
+        AudioManager.instance.PlayBgm(false);
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Win);
     }
 
     public void GameRetry()
     {
         SceneManager.LoadScene(0);
+    }
+
+    public void GameQuit()
+    {
+        Application.Quit();
     }
 
     private void Start()
@@ -126,11 +141,13 @@ public class GameManager : MonoBehaviour
     {
         isLive = false;
         Time.timeScale = 0;
+        uiJoy.localScale = Vector3.zero;
     }
 
     public void Resume()
     {
         isLive = true;
         Time.timeScale = 1;
+        uiJoy.localScale = Vector3.one;
     }
 }
