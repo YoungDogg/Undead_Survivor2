@@ -33,7 +33,7 @@ public class Enemy : MonoBehaviour
             return;
 
         Vector2 dirVec = target.position - rigid.position;
-        Vector2 nextVec = dirVec.normalized * speed * Time.fixedDeltaTime; // what if I miss Time.fixedDeltaTime? Wasn't FixedUpdate should work in fixed frame? Still fixedTime required?
+        Vector2 nextVec = dirVec.normalized * speed * Time.fixedDeltaTime;
         rigid.MovePosition(rigid.position + nextVec);
         rigid.velocity = Vector2.zero; 
     }
@@ -96,6 +96,7 @@ public class Enemy : MonoBehaviour
         Vector3 playerPos = GameManager.instance.player.transform.position;
         Vector3 dirVec = transform.position - playerPos;
         rigid.AddForce(dirVec.normalized * 3, ForceMode2D.Impulse);
+        //rigid.AddForce(dirVec * 20, ForceMode2D.Impulse);
     }
 
     public void Dead()
