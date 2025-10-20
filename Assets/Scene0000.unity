@@ -6832,7 +6832,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 8.444445
+  orthographic size: 14.34
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -14622,7 +14622,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -1.89, y: -10}
+  m_AnchoredPosition: {x: -1.8900146, y: -10}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1292341270
@@ -18071,6 +18071,7 @@ GameObject:
   - component: {fileID: 2079989134}
   - component: {fileID: 2079989133}
   - component: {fileID: 2079989132}
+  - component: {fileID: 2079989138}
   m_Layer: 0
   m_Name: Tilemap (1)
   m_TagString: Ground
@@ -22499,6 +22500,27 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!95 &2079989138
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2079989130}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 35dace824a66dd24da9127503733ea87, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2080013701
 GameObject:
   m_ObjectHideFlags: 0

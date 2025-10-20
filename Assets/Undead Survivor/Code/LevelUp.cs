@@ -37,12 +37,11 @@ public class LevelUp : MonoBehaviour
 
     void Next()
     {
-        // 1. 모든 아이템 비활성화
         foreach(Item item in items)
         {
             item.gameObject.SetActive(false);
         }
-        // 2. 그 중에서 랜덤 3개 아이템 활성화
+        // setActive true 3 random items
         int[] ran = new int[3];
         while (true)
         {
@@ -60,7 +59,7 @@ public class LevelUp : MonoBehaviour
         {
             Item ranItem = items[ran[index]];
 
-            // 3. 만렙 아이템의 경우는 소비아이템으로 대체
+            // Replace the max item to consumable item.
             if(ranItem.level == ranItem.data.damages.Length)
             {
                 // consumable items are from item 4
