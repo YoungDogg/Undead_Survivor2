@@ -9,12 +9,12 @@ public class Character : MonoBehaviour
         get { return GameManager.instance.playerId == 0 ? 1.1f : 1f; }
     }
 
-    public static float WeaponSpeed
+    public static float rotationSpeed
     {
         get { return GameManager.instance.playerId == 1 ? 1.1f : 1f; }
     }
 
-    public static float WeaponRate
+    public static float fireCooldown
     {
         get { return GameManager.instance.playerId == 1 ? .9f : 1f; }
     }

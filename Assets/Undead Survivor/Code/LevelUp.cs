@@ -41,26 +41,31 @@ public class LevelUp : MonoBehaviour
         {
             item.gameObject.SetActive(false);
         }
-        // setActive true 3 random items
-        int[] ran = new int[3];
-        while (true)
-        {
-            ran[0] = Random.Range(0, items.Length);
-            ran[1] = Random.Range(0, items.Length);
-            ran[2] = Random.Range(0, items.Length);
 
-            if (ran[0] != ran[1] && ran[1] != ran[2] && ran[2] != ran[0])
-            {
-                break;
-            }
+        // make a copy of item array
+        List<int> itemCopyList = new List<int>();
+        for(int i = 0; i < items.Length; i++)
+        {
+            itemCopyList.Add(i);
         }
 
+        int[] ran = new int[3];
+
+        for(int i = 0; i < ran.Length; i++)
+        {
+            int pickedIdx = Random.Range(0, itemCopyList.Count);
+            ran[i] = itemCopyList[pickedIdx];
+            itemCopyList.RemoveAt(pickedIdx);
+        }
+
+        // if items reach max level, replace it to consumables.
         for(int index=0; index < ran.Length; index++)
         {
             Item ranItem = items[ran[index]];
+            int maxLevel = ranItem.data.damages.Length;
 
             // Replace the max item to consumable item.
-            if(ranItem.level == ranItem.data.damages.Length)
+            if (ranItem.level == maxLevel)
             {
                 // consumable items are from item 4
                 items[Random.Range(4, items.Length)].gameObject.SetActive(true);

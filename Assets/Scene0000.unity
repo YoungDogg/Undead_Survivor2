@@ -806,15 +806,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnPoint: []
   spawnData:
-  - spawnTime: 0.7
+  - spawnInterval: 0.7
     spriteType: 0
     health: 10
     speed: 1.5
-  - spawnTime: 0.2
+  - spawnInterval: 0.5
     spriteType: 1
     health: 12
     speed: 1.8
-  levelTime: 0
+  durationPerLevel: 0
 --- !u!1 &82389471
 GameObject:
   m_ObjectHideFlags: 0
@@ -6832,7 +6832,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 14.34
+  orthographic size: 7.6190476
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2

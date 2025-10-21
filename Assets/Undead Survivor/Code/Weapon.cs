@@ -84,12 +84,12 @@ public class Weapon : MonoBehaviour
         switch (id)
         {
             case 0:
-                speed = 150 * Character.WeaponSpeed;
+                speed = 150 * Character.rotationSpeed;
                 Batch();
                 break;
 
             default:
-                speed = 0.5f * Character.WeaponRate;
+                speed = 0.5f * Character.fireCooldown;
                 break;
         }
 

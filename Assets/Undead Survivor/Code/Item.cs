@@ -89,7 +89,9 @@ public class Item : MonoBehaviour
         }
         level++;
 
-        if(level == data.damages.Length)
+        int maxLevel = data.damages.Length;
+
+        if (level == maxLevel)
         {
             GetComponent<Button>().interactable = false;
         }

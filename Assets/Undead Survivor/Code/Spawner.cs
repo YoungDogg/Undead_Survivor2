@@ -6,15 +6,27 @@ public class Spawner : MonoBehaviour
 {
     public Transform[] spawnPoint;
     public SpawnData[] spawnData;
-    public float levelTime;
-
+    public float durationPerLevel;
+    
     int level;
     float timer;
 
     private void Awake()
     {
         spawnPoint = GetComponentsInChildren<Transform>();
-        levelTime = GameManager.instance.maxGameTime / spawnData.Length;
+        int numOfDifficultySteps = spawnData.Length;
+
+        if(numOfDifficultySteps > 0)
+        {
+            durationPerLevel = GameManager.instance.maxGameTime / numOfDifficultySteps;
+        }
+        else    // avoid division by zero if spawndata is empty
+        {
+            Debug.LogError("SpawnData array is empty! cannot calculate durationPerLevel.");
+            durationPerLevel = GameManager.instance.maxGameTime;
+        }
+
+            
     }
 
     private void Update()
@@ -22,9 +34,9 @@ public class Spawner : MonoBehaviour
         if (!GameManager.instance.isLive)
             return;
         timer += Time.deltaTime;
-        level = Mathf.Min(Mathf.FloorToInt(GameManager.instance.gameTime / levelTime), spawnData.Length-1);
+        level = Mathf.Min(Mathf.FloorToInt(GameManager.instance.gameTime / durationPerLevel), spawnData.Length-1);
 
-        if(timer > spawnData[level].spawnTime)
+        if(timer > spawnData[level].spawnInterval)
         {
             timer = 0f;
             Spawn();
@@ -33,7 +45,7 @@ public class Spawner : MonoBehaviour
 
     void Spawn()
     {
-        GameObject enemy = GameManager.instance.pool.Get(0);
+        GameObject enemy = GameManager.instance.pool.Get(0);    // which is enemy
         enemy.transform.position = spawnPoint[Random.Range(1, spawnPoint.Length)].transform.position; // 0 is the player
         enemy.GetComponent<Enemy>().Init(spawnData[level]);       
     }
@@ -42,7 +54,7 @@ public class Spawner : MonoBehaviour
 [System.Serializable]
 public class SpawnData
 {    
-    public float spawnTime;
+    public float spawnInterval;
     public int spriteType;
     public int health;
     public float speed;
