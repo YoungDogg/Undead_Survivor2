@@ -7,7 +7,9 @@ public class Weapon : MonoBehaviour
     public int id;
     public int prefabId;
     public float damage;
-    public int count;
+    public int amount;
+    public int instanceCount;
+    public int pierceCount;
     public float speed;
 
     float timer;
@@ -43,18 +45,18 @@ public class Weapon : MonoBehaviour
         // test
         //if (Input.GetButtonDown("Jump"))
         //{
-        //    LevelUp(damage = 10, count = 1);
+        //    LevelUp(damage = 10, amount = 1);
         //}
     }
 
-    public void LevelUp(float damage, int count)
+    public void LevelUp(float damage, int amount)
     {
         this.damage = damage * Character.Damage;
-        this.count += count;
+        this.amount += amount;
 
         if(id == 0)
         {
-            Batch();
+            UpdateMeleeWeapon();
         }
 
         player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver);
@@ -70,7 +72,7 @@ public class Weapon : MonoBehaviour
         // Property Set
         id = data.itemId;
         damage = data.baseDamage * Character.Damage;
-        count = data.baseCount + Character.Count;
+        amount = data.baseCount + Character.Amount;
 
         for(int index = 0; index < GameManager.instance.pool.prefabs.Length; index++)
         {
@@ -85,7 +87,7 @@ public class Weapon : MonoBehaviour
         {
             case 0:
                 speed = 150 * Character.rotationSpeed;
-                Batch();
+                UpdateMeleeWeapon();
                 break;
 
             default:
@@ -101,9 +103,9 @@ public class Weapon : MonoBehaviour
         player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver);
     }
 
-    void Batch()
+    void UpdateMeleeWeapon()
     {
-        for(int idx = 0; idx < count; idx++)
+        for(int idx = 0; idx < amount; idx++)
         {
             Transform bullet;
             if (idx < transform.childCount)
@@ -119,11 +121,11 @@ public class Weapon : MonoBehaviour
             bullet.localPosition = Vector3.zero;
             bullet.localRotation = Quaternion.identity;
 
-            Vector3 rotVec = Vector3.forward * 360 * idx / count;
+            Vector3 rotVec = Vector3.forward * 360 * idx / amount;
             bullet.Rotate(rotVec);
             bullet.Translate(bullet.up * 1.5f, Space.World);
 
-            bullet.GetComponent<Bullet>().Init(damage, -100, Vector3.zero); // -100 is inifity per
+            bullet.GetComponent<Bullet>().Init(damage, -100, Vector3.zero); // -100 is inifity pierceCount
         }
     }
 
@@ -138,7 +140,7 @@ public class Weapon : MonoBehaviour
         Transform bullet = GameManager.instance.pool.Get(prefabId).transform;
         bullet.position = transform.position;
         bullet.rotation = Quaternion.FromToRotation(Vector3.up, dir);
-        bullet.GetComponent<Bullet>().Init(damage, count, dir);
+        bullet.GetComponent<Bullet>().Init(damage, pierceCount, dir);
 
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Range);
     }

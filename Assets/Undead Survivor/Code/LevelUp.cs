@@ -74,9 +74,6 @@ public class LevelUp : MonoBehaviour
             {
                 ranItem.gameObject.SetActive(true);
             }
-                
         }
-
-        
     }
 }

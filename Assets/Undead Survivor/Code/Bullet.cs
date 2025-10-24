@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    public float bulletSpeed;
     public float damage;
-    public int per;
+    public int pierceCount;
 
     Rigidbody2D rigid;
 
@@ -14,26 +15,26 @@ public class Bullet : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
     }
 
-    public void Init(float damage, int per, Vector3 dir)
+    public void Init(float damage, int pierceCount, Vector3 dir)
     {
         this.damage = damage;
-        this.per = per;
+        this.pierceCount = pierceCount;
 
-        if(per >= 0)
+        if(pierceCount >= 0)
         {
-            rigid.velocity = dir * 15f;
+            rigid.velocity = dir * bulletSpeed;
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.CompareTag("Enemy") || per == -100)
+        if (!collision.CompareTag("Enemy") || pierceCount == -100)
         {
             return;
         }
-        per--;
+        pierceCount--;
 
-        if(per < 0)
+        if(pierceCount < 0)
         {
             rigid.velocity = Vector2.zero;
             gameObject.SetActive(false);
@@ -42,7 +43,7 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (!collision.CompareTag("Area") || per == -100)
+        if (!collision.CompareTag("Area") || pierceCount == -100)
             return;
 
         gameObject.SetActive(false);

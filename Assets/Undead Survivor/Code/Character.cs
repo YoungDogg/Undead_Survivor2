@@ -24,7 +24,7 @@ public class Character : MonoBehaviour
         get { return GameManager.instance.playerId == 2 ? 1.2f : 1f; }
     }
 
-    public static int Count
+    public static int Amount
     {
         get { return GameManager.instance.playerId == 3 ? 1 : 0; }
     }
