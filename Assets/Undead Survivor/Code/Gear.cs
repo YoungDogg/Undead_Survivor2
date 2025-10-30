@@ -10,7 +10,7 @@ public class Gear : MonoBehaviour
     public void Init(ItemData data)
     {
         // Basic Set
-        name = "Gear " + data.itemId;
+        name = "Gear " + data.itemType;
         transform.parent = GameManager.instance.player.transform;
         transform.localPosition = Vector3.zero;
 
@@ -45,7 +45,7 @@ public class Gear : MonoBehaviour
 
         foreach(Weapon weapon in weapons)
         {
-            switch (weapon.id)
+            switch (weapon.itemType)
             {
                 case 0:
                     float speed = 150 * Character.rotationSpeed;

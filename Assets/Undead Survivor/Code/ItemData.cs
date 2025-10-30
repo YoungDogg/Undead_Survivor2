@@ -8,7 +8,8 @@ public class ItemData : ScriptableObject
     public enum ItemType { Melee, Range, Glove, Shoe, Heal}
     [Header("# Main Info")]
     public ItemType itemType;
-    public int itemId;
+    //public int itemId;
+    public PoolType poolType;
     public string itemName;
     [TextArea]
     public string itemDesc;
@@ -23,4 +24,6 @@ public class ItemData : ScriptableObject
     [Header("# Weapon")]
     public GameObject projectile;
     public Sprite hand;
+
+    
 }

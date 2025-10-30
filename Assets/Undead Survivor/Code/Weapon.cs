@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    public int id;
-    public int prefabId;
+    //public int id;
+    public ItemData.ItemType itemType;  // 아이템타입
     public float damage;
     public int amount;
     public int instanceCount;
@@ -25,13 +25,13 @@ public class Weapon : MonoBehaviour
         if (!GameManager.instance.isLive)
             return;
 
-        switch (id)
+        switch (itemType)
         {
-            case 0:
+            case ItemData.ItemType.Melee:
                 transform.Rotate(Vector3.back * speed * Time.deltaTime);
                 break;
 
-            default:
+            case ItemData.ItemType.Range:
                 timer += Time.deltaTime;
 
                 if (timer > speed)
@@ -41,12 +41,6 @@ public class Weapon : MonoBehaviour
                 }
                 break;
         }
-
-        // test
-        //if (Input.GetButtonDown("Jump"))
-        //{
-        //    LevelUp(damage = 10, amount = 1);
-        //}
     }
 
     public void LevelUp(float damage, int amount)
@@ -54,7 +48,7 @@ public class Weapon : MonoBehaviour
         this.damage = damage * Character.Damage;
         this.amount += amount;
 
-        if(id == 0)
+        if(itemType == ItemData.ItemType.Melee)
         {
             UpdateMeleeWeapon();
         }
@@ -65,32 +59,25 @@ public class Weapon : MonoBehaviour
     public void Init(ItemData data)
     {
         // Basic Set
-        name = "Weapon" + data.itemId;
+        name = "Weapon " + data.itemType;
         transform.parent = player.transform;
         transform.localPosition = Vector3.zero;
 
         // Property Set
-        id = data.itemId;
+        //id = data.itemId;
+        this.itemType = data.itemType;
         damage = data.baseDamage * Character.Damage;
         amount = data.baseCount + Character.Amount;
 
-        for(int index = 0; index < GameManager.instance.pool.prefabs.Length; index++)
+        
+        switch (this.itemType)
         {
-            if(data.projectile == GameManager.instance.pool.prefabs[index])
-            {
-                prefabId = index;
-                break;
-            }
-        }
-
-        switch (id)
-        {
-            case 0:
+            case ItemData.ItemType.Melee:
                 speed = 150 * Character.rotationSpeed;
                 UpdateMeleeWeapon();
                 break;
 
-            default:
+            case ItemData.ItemType.Range:
                 speed = 0.5f * Character.fireCooldown;
                 break;
         }
@@ -114,7 +101,7 @@ public class Weapon : MonoBehaviour
             }
             else
             {
-                bullet = GameManager.instance.pool.Get(prefabId).transform;
+                bullet = GameManager.instance.pool.Get(PoolType.Shovel).transform;
                 bullet.parent = transform;
             }
 
@@ -137,7 +124,7 @@ public class Weapon : MonoBehaviour
         Vector3 targetPos = player.scanner.nearestTarget.position;
         Vector3 dir = targetPos - transform.position;
         dir = dir.normalized;
-        Transform bullet = GameManager.instance.pool.Get(prefabId).transform;
+        Transform bullet = GameManager.instance.pool.Get(PoolType.Bullet).transform;
         bullet.position = transform.position;
         bullet.rotation = Quaternion.FromToRotation(Vector3.up, dir);
         bullet.GetComponent<Bullet>().Init(damage, pierceCount, dir);
