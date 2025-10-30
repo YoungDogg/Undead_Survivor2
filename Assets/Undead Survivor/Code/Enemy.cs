@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,9 +9,11 @@ public class Enemy : MonoBehaviour
     public float maxHealth;
     public RuntimeAnimatorController[] animatorCon;
     public Rigidbody2D target;
+    public int poolIndex;
 
     bool isLive;
 
+    PoolManager poolManager;    
     Rigidbody2D rigid;
     Collider2D coll;
     Animator anim;
@@ -20,6 +22,7 @@ public class Enemy : MonoBehaviour
 
     private void Awake()
     {
+        poolManager = GameManager.instance.pool;
         rigid = GetComponent<Rigidbody2D>();
         coll = GetComponent<Collider2D>();
         anim = GetComponent<Animator>();
@@ -85,7 +88,7 @@ public class Enemy : MonoBehaviour
             GameManager.instance.kill++;
             GameManager.instance.GetExp();
 
-            if(GameManager.instance.isLive)
+            if (GameManager.instance.isLive)
                 AudioManager.instance.PlaySfx(AudioManager.Sfx.Dead);
         }
     }
@@ -100,6 +103,7 @@ public class Enemy : MonoBehaviour
 
     public void Dead()
     {
-        gameObject.SetActive(false);
+        // 풀매니저의 Return메서드를 호출
+        poolManager.Return(poolIndex, gameObject);
     }
 }
