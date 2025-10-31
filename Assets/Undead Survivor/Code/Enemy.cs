@@ -102,6 +102,7 @@ public class Enemy : MonoBehaviour
 
     public void Dead()
     {
+        Debug.Log($"{transform.name}: dead");
         // 풀매니저의 Return메서드를 호출
         poolManager.Return(PoolType.Enemy, gameObject);
     }
