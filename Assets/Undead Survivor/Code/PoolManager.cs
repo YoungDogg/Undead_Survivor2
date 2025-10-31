@@ -24,7 +24,7 @@ public class PoolManager : MonoBehaviour
     // PoolType을 키로 사용해서 Queue를 찾는다.
     private Dictionary<PoolType, Queue<GameObject>> poolDictionary;
 
-    // Instantiate할 원본을 저장할 딕셔너리
+    // Instantiate할 원본을 저장할 딕셔너리. 프리팹이 많아지면 이 방법이 유리하다.
     private Dictionary<PoolType, GameObject> prefabDictionary;
 
     private void Awake()
@@ -32,37 +32,50 @@ public class PoolManager : MonoBehaviour
         poolDictionary = new Dictionary<PoolType, Queue<GameObject>>();
         prefabDictionary = new Dictionary<PoolType, GameObject>();
 
-        pools = new Queue<GameObject>[prefabs.Length];
-
-        for (int index = 0; index < pools.Length; index++)
+        // 인스펙터에 설정된 poolSettings 목록을 순회한다
+        foreach (PoolSetting setting in poolSettings)
         {
-            pools[index] = new Queue<GameObject>();
+            //딕셔너리에 타입을 키로 등록한다.
+            // Enemy 타입의 큐
+            poolDictionary.Add(setting.type, new Queue<GameObject>());
+            //Enemy 타입의 원본 프리팹
+            prefabDictionary.Add(setting.type, setting.prefab);
         }
     }
 
     public GameObject Get(PoolType type)
     {
-        // Enum을 int로 형변환해서 인덱스로 쓴다
-        int index = (int)type;
+        if (!poolDictionary.ContainsKey(type))
+        {
+            Debug.LogError("PoolManager: " + type + "타입의 풀이 없습니다.");
+            return null;
+        }
 
         GameObject select = null;
-        if (pools[index].Count > 0)
+        if (poolDictionary[type].Count > 0)
         {
-            select = pools[index].Dequeue();
+            select = poolDictionary[type].Dequeue();
         }
         else
         {
-            select = Instantiate(prefabs[index], transform);
+            // 큐가 비었으면, Enemy 타입의 원본프리팹을 찾아서 새로 생성
+            GameObject prefab = prefabDictionary[type];
+            select = Instantiate(prefab, transform);
         }
 
         select.SetActive(true);
         return select;
     }
+    // Return 메서드도 PoolType을 받는다.
     public void Return(PoolType type, GameObject target)
     {
-        // Enum을 int로 형변환하기
-        int index = (int)type;
+        if (!poolDictionary.ContainsKey(type))
+        {
+            Debug.LogError("PoolManager: " + type + "타입의 풀이 없습니다.");
+            return;
+        }
+
         target.SetActive(false);
-        pools[index].Enqueue(target);
+        poolDictionary[type].Enqueue(target);
     }
 }
