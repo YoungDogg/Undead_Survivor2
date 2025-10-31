@@ -43,8 +43,8 @@ public class Bullet : MonoBehaviour
         if(pierceCount < 0)
         {
             rigid.velocity = Vector2.zero;
-            gameObject.SetActive(false);
-            poolManager.Return(poolIndex, gameObject);
+            //gameObject.SetActive(false);
+            poolManager.Return(PoolType.Bullet, gameObject);
         }
     }
 
@@ -54,6 +54,6 @@ public class Bullet : MonoBehaviour
             return;
 
         gameObject.SetActive(false);
-        poolManager.Return(poolIndex, gameObject);
+        poolManager.Return(PoolType.Bullet, gameObject);
     }
 }

@@ -9,7 +9,6 @@ public class Enemy : MonoBehaviour
     public float maxHealth;
     public RuntimeAnimatorController[] animatorCon;
     public Rigidbody2D target;
-    public int poolIndex;
 
     bool isLive;
 
@@ -104,6 +103,6 @@ public class Enemy : MonoBehaviour
     public void Dead()
     {
         // 풀매니저의 Return메서드를 호출
-        poolManager.Return(poolIndex, gameObject);
+        poolManager.Return(PoolType.Enemy, gameObject);
     }
 }
